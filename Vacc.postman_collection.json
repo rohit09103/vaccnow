@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "a6e509ba-7082-4639-8c3f-20e96d6bfe84",
+		"name": "Vacc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET-branches",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/branches",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"branches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET-all-vaccines-for",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/branches/vaccines",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"branches",
+						"vaccines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET-vaccines-for-branchid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/branches/5/vaccines",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"branches",
+						"5",
+						"vaccines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET-availability-branch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/branches/5/availability",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"branches",
+						"5",
+						"availability"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST-booking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"branchId\": 5,\r\n    \"vaccineId\": 1,\r\n    \"bookingDate\": \"2021-03-19\",\r\n    \"bookingSlot\": \"15:00-15:15\",\r\n    \"paymentMethod\":{\r\n        \"paymentMethodType\": \"CASH\",\r\n        \"amount\": 340.21\r\n    },\r\n    \"name\": \"Rohit\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/booking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET-bookings-for-booking-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/booking/branches/5/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"booking",
+						"branches",
+						"5",
+						"report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET-Bookings-on-dates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/booking/report?fromDate=2021-03-20&toDate=2021-03-29",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"booking",
+						"report"
+					],
+					"query": [
+						{
+							"key": "fromDate",
+							"value": "2021-03-20"
+						},
+						{
+							"key": "toDate",
+							"value": "2021-03-29"
+						},
+						{
+							"key": "date",
+							"value": "2021-03-19",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET-bookings-confirmed",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/booking/confirmed?fromDate=2021-03-01&toDate=2021-03-15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"booking",
+						"confirmed"
+					],
+					"query": [
+						{
+							"key": "fromDate",
+							"value": "2021-03-01"
+						},
+						{
+							"key": "toDate",
+							"value": "2021-03-15"
+						},
+						{
+							"key": "date",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

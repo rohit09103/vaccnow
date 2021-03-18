@@ -21,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.localhost.vaccination.entity.AvailabilityEntity;
 import com.localhost.vaccination.entity.BranchEntity;
 import com.localhost.vaccination.model.Availability;
-import com.localhost.vaccination.model.AvailabilityDatesAndSlot;
 
 /**
  * @author rohitsharma08
@@ -54,7 +53,7 @@ public class AvailabilityMapperTest {
 		availability.setSlot("09:00-09:15");
 		availabilityEntities.add(availability);
 		availability = new AvailabilityEntity();
-		availability.setId(1);
+		availability.setId(2);
 		availability.setBranch(prepareBranchEntity());
 		availability.setDate(new Date(new java.util.Date().getTime()));
 		availability.setSlot("10:00-10:15");

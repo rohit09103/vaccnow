@@ -4,7 +4,6 @@
 package com.localhost.vaccination.daoimpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -23,7 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.localhost.vaccination.dao.impl.AvailabilityDaoImpl;
 import com.localhost.vaccination.entity.AvailabilityEntity;
 import com.localhost.vaccination.entity.BranchEntity;
-import com.localhost.vaccination.repository.AvailabilityRepository;import ch.qos.logback.core.util.DatePatternToRegexUtil;
+import com.localhost.vaccination.repository.AvailabilityRepository;
 
 /**
  * @author rohitsharma08

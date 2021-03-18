@@ -4,16 +4,15 @@
 package com.localhost.vaccination.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,18 +23,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.localhost.vaccination.dao.AvailabilityDao;
+import com.localhost.vaccination.dao.BookingDao;
 import com.localhost.vaccination.dao.BranchDao;
-import com.localhost.vaccination.entity.AvailabilityEntity;
+import com.localhost.vaccination.entity.BookingEntity;
 import com.localhost.vaccination.entity.BranchEntity;
 import com.localhost.vaccination.entity.VaccineEntity;
-import com.localhost.vaccination.entity.VaccinesInBranchEntity;
-import com.localhost.vaccination.mapper.AvailabilityMapper;
-import com.localhost.vaccination.mapper.BranchMapper;
-import com.localhost.vaccination.model.Availability;
-import com.localhost.vaccination.model.AvailabilityDatesAndSlot;
-import com.localhost.vaccination.model.Branch;
-import com.localhost.vaccination.model.Vaccine;
-import com.localhost.vaccination.service.impl.BranchServiceImpl;
+import com.localhost.vaccination.enums.PaymentMethodType;
+import com.localhost.vaccination.enums.StatusType;
+import com.localhost.vaccination.mapper.BookingMapper;
+import com.localhost.vaccination.model.Booking;
+import com.localhost.vaccination.model.BranchBookings;
+import com.localhost.vaccination.model.PaymentMethod;
+import com.localhost.vaccination.service.impl.BookingServiceImpl;
 
 /**
  * @author rohitsharma08
@@ -46,127 +45,66 @@ import com.localhost.vaccination.service.impl.BranchServiceImpl;
 public class BookingServiceImplTest {
 
 	@InjectMocks
-	private BranchServiceImpl branchServiceImpl;
+	private BookingServiceImpl bookingServiceImpl;
 
 	@Mock
 	private BranchDao branchDao;
 
 	@Mock
-	private BranchMapper branchMapper;
+	private BookingMapper bookingMapper;
 
 	@Mock
-	private AvailabilityMapper availabilityMapper;
+	private BookingDao bookingDao;
 
 	@Mock
 	private AvailabilityDao availabilityDao;
 
 	@Test
-	public void testGetAllBranches() {
-		when(branchDao.getAllBranches()).thenReturn(prepareBranchEntities());
-		when(branchMapper.mapListBranchEntityToListBranchModel(anyList())).thenReturn(prepareBranchModels());
-		List<Branch> branchs = branchServiceImpl.getAllBranches();
-		assertThat(branchs.size()).isEqualTo(2);
-		assertThat(branchs.get(1).getBranchId()).isEqualTo(2);
+	public void testFetchAllBookingsForBranch() {
+		when(bookingDao.fetchAllBookingsForBranchId(anyInt())).thenReturn(prepareBookingEntitys());
+		when(bookingMapper.mapBookingEntitiesToBranchBooking(anyList())).thenReturn(prepareBranchBooking());
+		BranchBookings branchBookings = bookingServiceImpl.fetchAllBookingsForBranch(1);
+		assertThat(branchBookings.getBookings().get(0).getVaccineId()).isEqualTo(2);
+		assertThat(branchBookings.getBookings().size()).isEqualTo(1);
+		assertThat(branchBookings.getBranchId()).isEqualTo(1);
 
 	}
 
 	@Test
-	public void testGetAllVaccinesPerBranch() {
-		when(branchDao.getAllAvailableVaccinesForBranches()).thenReturn(prepareVaccinesInBranchEntities());
-		when(branchMapper.mapVaccinesBranchEntitiesToBranchModel(anyMap())).thenReturn(prepareBranchModels());
-		List<Branch> branchs = branchServiceImpl.getAllVaccinesPerBranch();
-		assertThat(branchs.size()).isEqualTo(2);
-		assertThat(branchs.get(1).getBranchId()).isEqualTo(2);
-	}
-
-	@Test
-	public void testGetAllVaccinesForBranch() {
-		when(branchDao.getAllAvailableVaccinesForBranch(anyInt())).thenReturn(prepareVaccinesInBranchEntities());
-		when(branchMapper.mapVaccinesBranchEntitiesToSingleBranchModel(anyMap()))
-				.thenReturn(prepareBranchModels().get(0));
-		Branch branch = branchServiceImpl.getAllVaccinesForBranch(1);
-		assertThat(branch.getVaccines().size()).isEqualTo(3);
-		assertThat(branch.getBranchId()).isEqualTo(1);
+	public void testFetchAllBookingsForDateScheduled() {
+		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(Date.class), any(Date.class), any(Date.class),
+				any(StatusType.class))).thenReturn(prepareBookingEntitys());
+		when(bookingMapper.mapEntityBookingListToModelBookingList(anyList())).thenReturn(prepareBookingModels());
+		List<Booking> bookings = bookingServiceImpl.fetchAllBookingsForDateOrPeriod(null, null, new java.util.Date(), StatusType.SCHEDULED);
+		assertThat(bookings.size()).isEqualTo(3);
+		assertThat(bookings.get(1).getBranchId()).isEqualTo(1);
+		assertThat(bookings.get(1).getVaccineId()).isEqualTo(3);
 	}
 	
 	@Test
-	public void testGetAllAvailabilityForBranch() {
-		when(availabilityDao.getAvailabilityForBranch(anyInt())).thenReturn(prepareMapAvailabilityEntity());
-		when(availabilityMapper.mapAvailabilityEntityToModel(anyMap())).thenReturn(prepareAvailability());
-		Availability availability = branchServiceImpl.getAllAvailabilityForBranch(1);
-		assertThat(availability.getBranchId()).isEqualTo(1);
-		assertThat(availability.getDates().size()).isEqualTo(1);
-		assertThat(availability.getDates().get(0).getSlots().size()).isEqualTo(2);
+	public void testFetchAllBookingsForDateCompleted() {
+		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(Date.class), any(Date.class), any(Date.class),
+				any(StatusType.class))).thenReturn(prepareBookingEntitys());
+		when(bookingMapper.mapEntityBookingListToModelBookingList(anyList())).thenReturn(prepareBookingModels());
+		List<Booking> bookings = bookingServiceImpl.fetchAllBookingsForDateOrPeriod(null, null, new java.util.Date(), StatusType.COMPLETED);
+		assertThat(bookings.size()).isEqualTo(1);
+		assertThat(bookings.get(0).getBranchId()).isEqualTo(1);
+		assertThat(bookings.get(0).getVaccineId()).isEqualTo(2);
 	}
-
-	/**
-	 * 
-	 */
-	private List<BranchEntity> prepareBranchEntities() {
-		List<BranchEntity> branches = new ArrayList<>();
-		BranchEntity branchOne = new BranchEntity();
-		branchOne.setId(1);
-		branchOne.setLocation("Delhi");
-		branchOne.setName("Community Center");
-		branchOne.setPhone("0987654321");
-		branches.add(branchOne);
-
-		branchOne = new BranchEntity();
-		branchOne.setId(2);
-		branchOne.setLocation("Mumbai");
-		branchOne.setName("general hospital");
-		branchOne.setPhone("890754321");
-		branches.add(branchOne);
-		return branches;
-	}
-
-	private List<Branch> prepareBranchModels() {
-		List<Branch> branches = new ArrayList<>();
-		Branch branchOne = new Branch();
-		branchOne.setBranchId(1);
-		branchOne.setLocation("Delhi");
-		branchOne.setName("Community Center");
-		branchOne.setPhoneNumber("0987654321");
-		branches.add(branchOne);
-
-		branchOne = new Branch();
-		branchOne.setBranchId(2);
-		branchOne.setLocation("Mumbai");
-		branchOne.setName("general hospital");
-		branchOne.setPhoneNumber("890754321");
-		branches.add(branchOne);
-		
-		return setupBranchvaccines(branches);
-	}
-
-	private Map<Integer, List<VaccinesInBranchEntity>> prepareVaccinesInBranchEntities() {
-		return prepareListVaccinesInBranchEntity().stream()
-				.collect(Collectors.groupingBy(vacc -> vacc.getBranch().getId()));
-	}
-
-	private List<VaccinesInBranchEntity> prepareListVaccinesInBranchEntity() {
-		List<VaccinesInBranchEntity> vaccinesInBranchEntities = new ArrayList<>();
-		VaccinesInBranchEntity vaccinesInBranchEntity = new VaccinesInBranchEntity();
-		vaccinesInBranchEntity.setBranch(prepareBranchEntity());
-		vaccinesInBranchEntity.setVaccine(prepareVaccineEntity());
-		vaccinesInBranchEntity.setQuantity(123);
-		vaccinesInBranchEntities.add(vaccinesInBranchEntity);
-		vaccinesInBranchEntity = new VaccinesInBranchEntity();
-		vaccinesInBranchEntity.setBranch(prepareBranchEntity());
-		VaccineEntity vaccine = new VaccineEntity();
-		vaccine.setName("polio");
-		vaccine.setId(2);
-		vaccinesInBranchEntity.setVaccine(vaccine);
-		vaccinesInBranchEntity.setQuantity(243);
-		vaccinesInBranchEntities.add(vaccinesInBranchEntity);
-		return vaccinesInBranchEntities;
-	}
-
-	private VaccineEntity prepareVaccineEntity() {
-		VaccineEntity vaccine = new VaccineEntity();
-		vaccine.setName("pfizer");
-		vaccine.setId(1);
-		return vaccine;
+	
+	@Test
+	public void testFetchAllBookingsForPeriod() {
+		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(Date.class), any(Date.class), any(Date.class),
+				any(StatusType.class))).thenReturn(prepareBookingEntitys());
+		when(bookingMapper.mapEntityBookingListToModelBookingList(anyList())).thenReturn(prepareBookingModels());
+		Calendar from = Calendar.getInstance();
+		from.add(Calendar.DATE, -5);
+		Calendar to = Calendar.getInstance();
+		to.add(Calendar.DATE, +5);
+		List<Booking> bookings = bookingServiceImpl.fetchAllBookingsForDateOrPeriod(from.getTime(), to.getTime(), null, StatusType.SCHEDULED);
+		assertThat(bookings.size()).isEqualTo(3);
+		assertThat(bookings.get(2).getBranchId()).isEqualTo(1);
+		assertThat(bookings.get(2).getVaccineId()).isEqualTo(4);
 	}
 
 	private BranchEntity prepareBranchEntity() {
@@ -178,64 +116,121 @@ public class BookingServiceImplTest {
 		return branchOne;
 	}
 
-	private List<Branch> setupBranchvaccines(List<Branch> branchs) {
-		branchs.forEach(branch -> {
-			List<Vaccine> vaccines = new ArrayList<>();
-			Vaccine vaccine = new Vaccine();
-			vaccine.setName("pfizer");
-			vaccine.setVaccineId(1);
-			vaccines.add(vaccine);
+	private List<BookingEntity> prepareBookingEntitys() {
+		List<BookingEntity> bookingEntities = new ArrayList<>();
+		BookingEntity bookingEntity = new BookingEntity();
+		bookingEntity.setId(1);
+		bookingEntity.setAmount(200.20);
+		bookingEntity.setDate(new Date(new java.util.Date().getTime()));
+		bookingEntity.setBranch(prepareBranchEntity());
+		bookingEntity.setVaccine(new VaccineEntity());
+		bookingEntity.setEmail("name@yopmail.com");
+		bookingEntity.setName("name");
+		bookingEntity.setStatusType(StatusType.SCHEDULED);
+		bookingEntity.setPaymentMethodType(PaymentMethodType.CASH);
+		bookingEntities.add(bookingEntity);
+		bookingEntity = new BookingEntity();
+		bookingEntity.setId(2);
+		bookingEntity.setAmount(100.90);
+		bookingEntity.setDate(new Date(new java.util.Date().getTime()));
+		bookingEntity.setBranch(prepareBranchEntity());
+		bookingEntity.setVaccine(new VaccineEntity());
+		bookingEntity.setEmail("some@yopmail.com");
+		bookingEntity.setName("some");
+		bookingEntity.setStatusType(StatusType.COMPLETED);
+		bookingEntity.setPaymentMethodType(PaymentMethodType.CASH);
+		bookingEntities.add(bookingEntity);
+		bookingEntity = new BookingEntity();
+		bookingEntity.setId(3);
+		bookingEntity.setAmount(130.20);
+		bookingEntity.setDate(new Date(new java.util.Date().getTime()));
+		bookingEntity.setBranch(prepareBranchEntity());
+		bookingEntity.setVaccine(new VaccineEntity());
+		bookingEntity.setEmail("random@yopmail.com");
+		bookingEntity.setName("random");
+		bookingEntity.setStatusType(StatusType.SCHEDULED);
+		bookingEntity.setPaymentMethodType(PaymentMethodType.CASH);
+		bookingEntities.add(bookingEntity);
+		bookingEntity = new BookingEntity();
+		bookingEntity.setId(4);
+		bookingEntity.setAmount(50.20);
+		bookingEntity.setDate(new Date(new java.util.Date().getTime()));
+		bookingEntity.setBranch(prepareBranchEntity());
+		bookingEntity.setVaccine(new VaccineEntity());
+		bookingEntity.setEmail("here@yopmail.com");
+		bookingEntity.setName("here");
+		bookingEntity.setStatusType(StatusType.SCHEDULED);
+		bookingEntity.setPaymentMethodType(PaymentMethodType.CASH);
+		bookingEntities.add(bookingEntity);
+		return bookingEntities;
+	}
 
-			vaccine = new Vaccine();
-			vaccine.setName("covid shield");
-			vaccine.setVaccineId(2);
-			vaccines.add(vaccine);
+	private BranchBookings prepareBranchBooking() {
+		BranchBookings branchBookings = new BranchBookings();
+		branchBookings.setBranchId(1);
+		branchBookings.setLocation("delhi");
+		branchBookings.setName("CommunityCenter");
+		branchBookings.setPhoneNumber("7890654321");
+		List<Booking> bookings = new ArrayList<>();
+		branchBookings.setBookings(bookings);
+		Booking booking = new Booking();
+		booking.setBookingDate(new Date(new java.util.Date().getTime()));
+		booking.setName("name");
+		booking.setEmail("name@email.com");
+		booking.setStatusType(StatusType.SCHEDULED);
+		booking.setVaccineId(2);
+		PaymentMethod paymentMethod = new PaymentMethod();
+		paymentMethod.setAmount(200.21);
+		paymentMethod.setPaymentMethodType(PaymentMethodType.CASH);
+		booking.setPaymentMethod(paymentMethod);
+		bookings.add(booking);
 
-			vaccine = new Vaccine();
-			vaccine.setName("polio");
-			vaccine.setVaccineId(3);
-			vaccines.add(vaccine);
-			branch.setVaccines(vaccines);
-		});
-		return branchs;
+		return branchBookings;
 	}
 	
-	private Map<Date, List<AvailabilityEntity>> prepareMapAvailabilityEntity() {
-		return setupAvailabilityEntities().stream().collect(Collectors.groupingBy(avail -> avail.getDate()));
-	}
-	
-	private List<AvailabilityEntity> setupAvailabilityEntities() {
-		List<AvailabilityEntity> availabilityEntities = new ArrayList<>();
-		AvailabilityEntity availability = new AvailabilityEntity();
-		availability.setId(1);
-		availability.setBranch(prepareBranchEntity());
-		availability.setDate(new Date(new java.util.Date().getTime()));
-		availability.setSlot("09:00-09:15");
-		availabilityEntities.add(availability);
-		availability = new AvailabilityEntity();
-		availability.setId(2);
-		availability.setBranch(prepareBranchEntity());
-		availability.setDate(new Date(new java.util.Date().getTime()));
-		availability.setSlot("10:00-10:15");
-		return availabilityEntities;
-	}
-	
-	private Availability prepareAvailability() {
-		Availability availability = new Availability();
-		availability.setBranchId(1);
-		availability.setBranchLocation("Delhi");
-		availability.setBranchName("Community Center");
-		availability.setBranchPhone("4321567890");
-		List<AvailabilityDatesAndSlot> availabilityDatesAndSlots = new ArrayList<>();
-		AvailabilityDatesAndSlot availabilityDatesAndSlot = new AvailabilityDatesAndSlot();
-		availabilityDatesAndSlot.setDate(new Date(new java.util.Date().getTime()));
-		List<String> slots = new ArrayList<>();
-		slots.add("09:00-09:15");
-		slots.add("10:00-10:15");
-		availabilityDatesAndSlot.setSlots(slots);
-		availabilityDatesAndSlots.add(availabilityDatesAndSlot);
-		availability.setDates(availabilityDatesAndSlots);
-		return availability;
+	private List<Booking> prepareBookingModels() {
+		List<Booking> bookings = new ArrayList<>();
+		Booking booking = new Booking();
+		booking.setBookingDate(new java.util.Date());
+		booking.setBranchId(1);
+		booking.setVaccineId(1);
+		booking.setEmail("name@yopmail.com");
+		booking.setName("name");
+		booking.setStatusType(StatusType.SCHEDULED);
+		PaymentMethod paymentMethod = new PaymentMethod(null, PaymentMethodType.CASH, 200.22, null, null, null);
+		booking.setPaymentMethod(paymentMethod);
+		bookings.add(booking);
+		booking = new Booking();
+		booking.setBookingDate(new java.util.Date());
+		booking.setBranchId(1);
+		booking.setVaccineId(2);
+		booking.setEmail("some@yopmail.com");
+		booking.setName("some");
+		booking.setStatusType(StatusType.COMPLETED);
+		paymentMethod = new PaymentMethod(null, PaymentMethodType.CASH, 100.22, null, null, null);
+		booking.setPaymentMethod(paymentMethod);
+		bookings.add(booking);
+		booking = new Booking();
+		booking.setBookingDate(new java.util.Date());
+		booking.setBranchId(1);
+		booking.setVaccineId(3);
+		booking.setEmail("random@yopmail.com");
+		booking.setName("random");
+		booking.setStatusType(StatusType.SCHEDULED);
+		paymentMethod = new PaymentMethod(null, PaymentMethodType.CASH, 130.00, null, null, null);
+		booking.setPaymentMethod(paymentMethod);
+		bookings.add(booking);
+		booking = new Booking();
+		booking.setBookingDate(new java.util.Date());
+		booking.setBranchId(1);
+		booking.setVaccineId(4);
+		booking.setEmail("here@yopmail.com");
+		booking.setName("here");
+		booking.setStatusType(StatusType.SCHEDULED);
+		paymentMethod = new PaymentMethod(null, PaymentMethodType.CASH, 480.22, null, null, null);
+		booking.setPaymentMethod(paymentMethod);
+		bookings.add(booking);
+		return bookings;
 	}
 
 }

@@ -72,29 +72,29 @@ public class BookingServiceImplTest {
 
 	@Test
 	public void testFetchAllBookingsForDateScheduled() {
-		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(Date.class), any(Date.class), any(Date.class),
+		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(), any(), any(),
 				any(StatusType.class))).thenReturn(prepareBookingEntitys());
 		when(bookingMapper.mapEntityBookingListToModelBookingList(anyList())).thenReturn(prepareBookingModels());
 		List<Booking> bookings = bookingServiceImpl.fetchAllBookingsForDateOrPeriod(null, null, new java.util.Date(), StatusType.SCHEDULED);
-		assertThat(bookings.size()).isEqualTo(3);
+		assertThat(bookings.size()).isEqualTo(4);
 		assertThat(bookings.get(1).getBranchId()).isEqualTo(1);
-		assertThat(bookings.get(1).getVaccineId()).isEqualTo(3);
+		assertThat(bookings.get(1).getVaccineId()).isEqualTo(2);
 	}
 	
 	@Test
 	public void testFetchAllBookingsForDateCompleted() {
-		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(Date.class), any(Date.class), any(Date.class),
+		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(), any(), any(),
 				any(StatusType.class))).thenReturn(prepareBookingEntitys());
 		when(bookingMapper.mapEntityBookingListToModelBookingList(anyList())).thenReturn(prepareBookingModels());
 		List<Booking> bookings = bookingServiceImpl.fetchAllBookingsForDateOrPeriod(null, null, new java.util.Date(), StatusType.COMPLETED);
-		assertThat(bookings.size()).isEqualTo(1);
+		assertThat(bookings.size()).isEqualTo(4);
 		assertThat(bookings.get(0).getBranchId()).isEqualTo(1);
-		assertThat(bookings.get(0).getVaccineId()).isEqualTo(2);
+		assertThat(bookings.get(0).getVaccineId()).isEqualTo(1);
 	}
 	
 	@Test
 	public void testFetchAllBookingsForPeriod() {
-		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(Date.class), any(Date.class), any(Date.class),
+		when(bookingDao.fetchAllBookingsForDayOrPeriod(any(), any(), any(),
 				any(StatusType.class))).thenReturn(prepareBookingEntitys());
 		when(bookingMapper.mapEntityBookingListToModelBookingList(anyList())).thenReturn(prepareBookingModels());
 		Calendar from = Calendar.getInstance();
@@ -102,9 +102,9 @@ public class BookingServiceImplTest {
 		Calendar to = Calendar.getInstance();
 		to.add(Calendar.DATE, +5);
 		List<Booking> bookings = bookingServiceImpl.fetchAllBookingsForDateOrPeriod(from.getTime(), to.getTime(), null, StatusType.SCHEDULED);
-		assertThat(bookings.size()).isEqualTo(3);
+		assertThat(bookings.size()).isEqualTo(4);
 		assertThat(bookings.get(2).getBranchId()).isEqualTo(1);
-		assertThat(bookings.get(2).getVaccineId()).isEqualTo(4);
+		assertThat(bookings.get(2).getVaccineId()).isEqualTo(3);
 	}
 
 	private BranchEntity prepareBranchEntity() {

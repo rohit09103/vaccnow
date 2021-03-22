@@ -27,13 +27,12 @@ planned to be API first approach, of well-tested functions and enabling agility 
   * Swagger is available @ http://localhost:8080/swagger-ui.html
   * H2 DB console details:
   * Link: http://localhost:8080/h2-consol/
-  * ![DB connection details](https://github.com/rohit09103/vaccnow/dbconn.png)
   
 ## API
   * Postman collection is available @ ![Postman Collection]https://github.com/rohit09103/vaccnow/blob/master/Vacc.postman_collection.json)
   
 ## ER Diagram
-  * ![ERD](https://github.com/rohit09103/vaccnow/blob/master/ERD.png)
+  * ![ERD](https://github.com/rohit09103/vaccnow/blob/master/ERD.PNG)
   
 ## DB Details
   * DB url: jdbc:h2:file:~/test 
@@ -43,4 +42,4 @@ planned to be API first approach, of well-tested functions and enabling agility 
   * DB schema is present @ ![schema.sql](https://github.com/rohit09103/vaccnow/blob/master/src/main/resources/schema.sql)
   * DB seed data is available @ ![data.sql](https://github.com/rohit09103/vaccnow/blob/master/src/main/resources/data.sql)
   * Data is automatically seeded at app startup.
-  * ![DB connection](https://github.com/rohit09103/vaccnow/blob/master/h2-console.png.png)
+  * ![DB connection](https://github.com/rohit09103/vaccnow/blob/master/h2-console.PNG)

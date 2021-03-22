@@ -10,12 +10,17 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Model to contain dates and slots timings. slots are 15min window.
  * @author Rohit
  *
  */
 @JsonInclude(value = Include.NON_NULL)
+@Getter
+@Setter
 public class AvailabilityDatesAndSlot implements Serializable {
 
 	/**
@@ -32,33 +37,4 @@ public class AvailabilityDatesAndSlot implements Serializable {
 		//empty constructor
 	}
 
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	/**
-	 * @return the slots
-	 */
-	public List<String> getSlots() {
-		return slots;
-	}
-
-	/**
-	 * @param slots the slots to set
-	 */
-	public void setSlots(List<String> slots) {
-		this.slots = slots;
-	}
-	
-	
 }

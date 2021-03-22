@@ -9,12 +9,17 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Model to hold all availability data for a branch
  * @author Rohit
  *
  */
 @JsonInclude(value = Include.NON_NULL)
+@Getter
+@Setter
 public class Availability implements Serializable{
 	
 	
@@ -58,102 +63,5 @@ public class Availability implements Serializable{
 		this.errorMessageDescription = errorMessageDescription;
 	}
 
-	/**
-	 * @return the branchId
-	 */
-	public Integer getBranchId() {
-		return branchId;
-	}
-
-	/**
-	 * @param branchId the branchId to set
-	 */
-	public void setBranchId(Integer branchId) {
-		this.branchId = branchId;
-	}
-
-	/**
-	 * @return the branchName
-	 */
-	public String getBranchName() {
-		return branchName;
-	}
-
-	/**
-	 * @param branchName the branchName to set
-	 */
-	public void setBranchName(String branchName) {
-		this.branchName = branchName;
-	}
-
-	/**
-	 * @return the branchLocation
-	 */
-	public String getBranchLocation() {
-		return branchLocation;
-	}
-
-	/**
-	 * @param branchLocation the branchLocation to set
-	 */
-	public void setBranchLocation(String branchLocation) {
-		this.branchLocation = branchLocation;
-	}
-
-	/**
-	 * @return the dates
-	 */
-	public List<AvailabilityDatesAndSlot> getDates() {
-		return dates;
-	}
-
-	/**
-	 * @param dates the dates to set
-	 */
-	public void setDates(List<AvailabilityDatesAndSlot> dates) {
-		this.dates = dates;
-	}
-
-	/**
-	 * @return the errorMessageCode
-	 */
-	public String getErrorMessageCode() {
-		return errorMessageCode;
-	}
-
-	/**
-	 * @param errorMessageCode the errorMessageCode to set
-	 */
-	public void setErrorMessageCode(String errorMessageCode) {
-		this.errorMessageCode = errorMessageCode;
-	}
-
-	/**
-	 * @return the errorMessageDescription
-	 */
-	public String getErrorMessageDescription() {
-		return errorMessageDescription;
-	}
-
-	/**
-	 * @param errorMessageDescription the errorMessageDescription to set
-	 */
-	public void setErrorMessageDescription(String errorMessageDescription) {
-		this.errorMessageDescription = errorMessageDescription;
-	}
-
-	/**
-	 * @return the branchPhone
-	 */
-	public String getBranchPhone() {
-		return branchPhone;
-	}
-
-	/**
-	 * @param branchPhone the branchPhone to set
-	 */
-	public void setBranchPhone(String branchPhone) {
-		this.branchPhone = branchPhone;
-	}
 
 }

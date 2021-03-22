@@ -7,11 +7,16 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Rohit
  *
  */
 @Embeddable
+@Getter
+@Setter
 public class CompositeVaccineBranch implements Serializable{
 	
 	
@@ -37,37 +42,5 @@ public class CompositeVaccineBranch implements Serializable{
 		this.branchId = branchId;
 		this.vaccineId = vaccineId;
 	}
-
-
-
-	/**
-	 * @return the branchId
-	 */
-	public Integer getBranchId() {
-		return branchId;
-	}
-
-	/**
-	 * @param branchId the branchId to set
-	 */
-	public void setBranchId(Integer branchId) {
-		this.branchId = branchId;
-	}
-
-	/**
-	 * @return the vaccineId
-	 */
-	public Integer getVaccineId() {
-		return vaccineId;
-	}
-
-	/**
-	 * @param vaccineId the vaccineId to set
-	 */
-	public void setVaccineId(Integer vaccineId) {
-		this.vaccineId = vaccineId;
-	}
-	
-	
 
 }

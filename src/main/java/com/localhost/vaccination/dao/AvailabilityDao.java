@@ -33,7 +33,7 @@ public interface AvailabilityDao {
 	 * @param date
 	 * @return
 	 */
-	public List<AvailabilityEntity> getAvailabilityForBranchOnDate(Integer branchId, Date date);
+	List<AvailabilityEntity> getAvailabilityForBranchOnDate(Integer branchId, Date date);
 	
 	/**
 	 * Remove this availability from db.
@@ -41,7 +41,7 @@ public interface AvailabilityDao {
 	 * @param availabilityEntity
 	 * @return
 	 */
-	public void removeAvailability(AvailabilityEntity availabilityEntity);
+	void removeAvailability(AvailabilityEntity availabilityEntity);
 	
 	
 

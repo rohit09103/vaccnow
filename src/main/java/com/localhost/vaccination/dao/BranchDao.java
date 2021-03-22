@@ -24,14 +24,14 @@ public interface BranchDao {
 	 * 
 	 * @return
 	 */
-	public List<BranchEntity> getAllBranches();
+	 List<BranchEntity> getAllBranches();
 
 	/**
 	 * Method to fetch all available vaccines from all branches from repository
 	 * 
 	 * @return
 	 */
-	public Map<Integer, List<VaccinesInBranchEntity>> getAllAvailableVaccinesForBranches();
+	 Map<Integer, List<VaccinesInBranchEntity>> getAllAvailableVaccinesForBranches();
 
 	/**
 	 * Method to fetch all available vaccines for a specific branch from repository
@@ -39,7 +39,7 @@ public interface BranchDao {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public Map<Integer, List<VaccinesInBranchEntity>> getAllAvailableVaccinesForBranch(Integer branchId);
+	 Map<Integer, List<VaccinesInBranchEntity>> getAllAvailableVaccinesForBranch(Integer branchId);
 	
 	/**
 	 * Method to fetch a single record corresponding to a branch and a vaccine.
@@ -47,11 +47,11 @@ public interface BranchDao {
 	 * @param vaccineId
 	 * @return
 	 */
-	public VaccinesInBranchEntity getQuantityForVaccineInBranch(Integer branchId, Integer vaccineId);
+	 VaccinesInBranchEntity getQuantityForVaccineInBranch(Integer branchId, Integer vaccineId);
 	
 	/**
 	 * Method to update the quantity of vaccine when the booking happens.
 	 * @param vaccinesInBranchEntity
 	 */
-	public void udpateQuantityForBooking(VaccinesInBranchEntity vaccinesInBranchEntity);
+	 void udpateQuantityForBooking(VaccinesInBranchEntity vaccinesInBranchEntity);
 }

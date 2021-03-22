@@ -22,14 +22,14 @@ public interface BookingDao {
 	 * @param bookingEntity
 	 * @return
 	 */
-	public BookingEntity saveBooking(BookingEntity bookingEntity);
+	 BookingEntity saveBooking(BookingEntity bookingEntity);
 	
 	/**
 	 * Method to fetch all bookings of vaccination for branchId.
 	 * @param branchId
 	 * @return
 	 */
-	public List<BookingEntity> fetchAllBookingsForBranchId(Integer branchId);
+	 List<BookingEntity> fetchAllBookingsForBranchId(Integer branchId);
 	
 	/**
 	 * Fetch all bookings for given dates.
@@ -38,7 +38,7 @@ public interface BookingDao {
 	 * @param date
 	 * @return
 	 */
-	public List< BookingEntity> fetchAllBookingsForDayOrPeriod(Date fromDate, Date toDate, Date date,StatusType statusType);
+	 List< BookingEntity> fetchAllBookingsForDayOrPeriod(Date fromDate, Date toDate, Date date,StatusType statusType);
 	
 	
 

@@ -3,11 +3,6 @@
  */
 package com.localhost.vaccination.controller;
 
-import static com.localhost.vaccination.constants.VaccinationConstants.ERROR_MESAGE_DESCRIPTION_INTERNAL_SERVER_ERROR;
-import static com.localhost.vaccination.constants.VaccinationConstants.ERROR_MESSAGE_CODE_INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -24,6 +19,8 @@ import com.localhost.vaccination.model.Availability;
 import com.localhost.vaccination.model.Branch;
 import com.localhost.vaccination.service.BranchService;
 
+import io.swagger.annotations.ApiOperation;
+
 /**
  * Controller class to map all incoming http request to execution methods.
  * 
@@ -31,7 +28,7 @@ import com.localhost.vaccination.service.BranchService;
  *
  */
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/vaccnow")
 public class VaccinationController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(VaccinationController.class);
@@ -44,19 +41,12 @@ public class VaccinationController {
 	 * 
 	 * @return
 	 */
-	@GetMapping(path = "/branches", produces = "application/json")
+	@GetMapping(path = "/branches")
+	@ApiOperation(value = "Get All braches for a vaccination.")
 	public ResponseEntity<List<Branch>> getBranches() {
 		LOGGER.info("Invoking branch service to fetch all branches.");
 		List<Branch> branches = null;
-		try {
 			branches = branchService.getAllBranches();
-		} catch (Exception exception) {
-			LOGGER.error("Exception occured while fetching branches: {}", exception.getMessage());
-			List<Branch> errorResponse = new ArrayList<>();
-			errorResponse.add(new Branch(ERROR_MESSAGE_CODE_INTERNAL_SERVER_ERROR,
-					ERROR_MESAGE_DESCRIPTION_INTERNAL_SERVER_ERROR));
-			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorResponse);
-		}
 		return ResponseEntity.ok(branches);
 	}
 
@@ -65,19 +55,12 @@ public class VaccinationController {
 	 * 
 	 * @return
 	 */
-	@GetMapping(path = "/branches/vaccines", produces = "application/json")
+	@GetMapping(path = "/branches/vaccines")
+	@ApiOperation(value = "Get all available vaccines for all branches.")
 	public ResponseEntity<List<Branch>> getAllVaccinesPerBranch() {
 		LOGGER.info("Invoking branch service to fetch all vaccines for all branches.");
 		List<Branch> branches = null;
-		try {
 			branches = branchService.getAllVaccinesPerBranch();
-		} catch (Exception exception) {
-			LOGGER.error("Exception occured while fetching branches: {}", exception.getMessage());
-			List<Branch> errorResponse = new ArrayList<>();
-			errorResponse.add(new Branch(ERROR_MESSAGE_CODE_INTERNAL_SERVER_ERROR,
-					ERROR_MESAGE_DESCRIPTION_INTERNAL_SERVER_ERROR));
-			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(errorResponse);
-		}
 		return ResponseEntity.ok(branches);
 	}
 
@@ -86,24 +69,15 @@ public class VaccinationController {
 	 * 
 	 * @return
 	 */
-	@GetMapping(path = "/branches/{branchId}/vaccines", produces = "application/json")
+	@GetMapping(path = "/branches/{branchId}/vaccines")
+	@ApiOperation(value = "Get all available vaccines for a branch.")
 	public ResponseEntity<Branch> getAllVaccinesForBranch(
 			@PathVariable(required = true, name = "branchId") Integer branchId) {
 		LOGGER.info("Invoking branch service to fetch all vaccines for a branches with ID:{}.", branchId);
 		Branch branch = null;
-		try {
 			if (null == branchId)
 				throw new NotFoundException("Branch Id null.");
 			branch = branchService.getAllVaccinesForBranch(branchId);
-		} catch (NotFoundException foundException) {
-			LOGGER.error("Branch with id:{} not found: {}", branchId, foundException.getMessage());
-			return ResponseEntity.notFound().build();
-		} catch (Exception exception) {
-			LOGGER.error("Exception occured while fetching vaccines for branch with id:{} : {}", branchId,
-					exception.getMessage());
-			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new Branch(
-					ERROR_MESSAGE_CODE_INTERNAL_SERVER_ERROR, ERROR_MESAGE_DESCRIPTION_INTERNAL_SERVER_ERROR));
-		}
 		return ResponseEntity.ok(branch);
 	}
 
@@ -112,24 +86,15 @@ public class VaccinationController {
 	 * 
 	 * @return
 	 */
-	@GetMapping(path = "/branches/{branchId}/availability", produces = "application/json")
+	@GetMapping(path = "/branches/{branchId}/availability")
+	@ApiOperation(value = "Get all available slots for a branch.")
 	public ResponseEntity<Availability> getAllAvailabilityForBranch(
 			@PathVariable(required = true, name = "branchId") Integer branchId) {
 		LOGGER.info("Invoking branch service to fetch all availability for all branches.");
 		Availability availability = null;
-		try {
 			if (null == branchId)
 				throw new NotFoundException("Branch Id null.");
 			availability = branchService.getAllAvailabilityForBranch(branchId);
-		} catch (RuntimeException foundException) {
-			LOGGER.error("Branch with id:{} not found: {}", branchId, foundException.getMessage());
-			return ResponseEntity.notFound().build();
-		} catch (Exception exception) {
-			LOGGER.error("Exception occured while fetching availability for branch with id:{} : {}", branchId,
-					exception.getMessage());
-			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new Availability(
-					ERROR_MESSAGE_CODE_INTERNAL_SERVER_ERROR, ERROR_MESAGE_DESCRIPTION_INTERNAL_SERVER_ERROR));
-		}
 		return ResponseEntity.ok(availability);
 	}
 

@@ -32,7 +32,7 @@ public interface BookingService {
 	 * @param branchId
 	 * @return
 	 */
-	public BranchBookings fetchAllBookingsForBranch(Integer branchId);
+	 BranchBookings fetchAllBookingsForBranch(Integer branchId);
 
 	/**
 	 * Fetch all bookings for a specific period or date.
@@ -42,6 +42,6 @@ public interface BookingService {
 	 * @param date
 	 * @return
 	 */
-	public List<Booking> fetchAllBookingsForDateOrPeriod(Date fromDate, Date toDate, Date date, StatusType statusType);
+	 List<Booking> fetchAllBookingsForDateOrPeriod(Date fromDate, Date toDate, Date date, StatusType statusType);
 
 }

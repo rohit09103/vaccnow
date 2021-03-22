@@ -4,9 +4,9 @@
 package com.localhost.vaccination.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.localhost.vaccination.constants.VaccinationConstants;
+import com.localhost.vaccination.exception.NotFoundException;
 import com.localhost.vaccination.model.Availability;
 import com.localhost.vaccination.model.AvailabilityDatesAndSlot;
 import com.localhost.vaccination.model.Branch;
@@ -43,7 +43,7 @@ public class VaccinationControllerTest{
 	
 	@Mock
 	private BranchService branchService;
-
+	
 	@Test
 	public void testGetBranches() {
 		when(branchService.getAllBranches()).thenReturn(branchesSetup());
@@ -57,10 +57,9 @@ public class VaccinationControllerTest{
 	@Test
 	public void testGetBranchesException() {
 		when(branchService.getAllBranches()).thenThrow(new RuntimeException());
-		ResponseEntity<List<Branch>> branchesResponse = vaccinationController.getBranches();
-		
-		assertThat(branchesResponse.getStatusCode().compareTo(INTERNAL_SERVER_ERROR)).isEqualTo(0);
-		
+		assertThrows(Exception.class, () ->{
+			vaccinationController.getBranches();
+		});
 	}
 	
 	@Test
@@ -76,11 +75,9 @@ public class VaccinationControllerTest{
 	@Test
 	public void testGetAllVaccinesPerBranchException() {
 		when(branchService.getAllVaccinesPerBranch()).thenThrow(new RuntimeException());
-		ResponseEntity<List<Branch>> branchesResponse = vaccinationController.getAllVaccinesPerBranch();
-		
-		assertThat(branchesResponse.getStatusCode().compareTo(INTERNAL_SERVER_ERROR)).isEqualTo(0);
-		assertThat(branchesResponse.getBody().size()).isEqualTo(1);
-		assertThat(branchesResponse.getBody().get(0).getErrorMessageDescription()).isEqualToIgnoringCase(VaccinationConstants.ERROR_MESAGE_DESCRIPTION_INTERNAL_SERVER_ERROR);
+		assertThrows(Exception.class, () ->{
+			vaccinationController.getAllVaccinesPerBranch();
+		});
 	}
 	
 	@Test
@@ -96,15 +93,17 @@ public class VaccinationControllerTest{
 	
 	@Test
 	public void testGetAllVaccinesForBranchNotFound() {
-		ResponseEntity<Branch> branchesResponse = vaccinationController.getAllVaccinesForBranch(null);
-		assertThat(branchesResponse.getStatusCode().compareTo(HttpStatus.NOT_FOUND)).isEqualTo(0);
+		assertThrows(NotFoundException.class, () ->{
+			vaccinationController.getAllVaccinesForBranch(null);
+		});
 	}
 	
 	@Test
 	public void testGetAllVaccinesForBranchException() {
 		when(branchService.getAllVaccinesForBranch(anyInt())).thenThrow(new RuntimeException());
-		ResponseEntity<Branch> branchesResponse = vaccinationController.getAllVaccinesForBranch(1);
-		assertThat(branchesResponse.getStatusCode().compareTo(INTERNAL_SERVER_ERROR)).isEqualTo(0);
+		assertThrows(Exception.class, () ->{
+			vaccinationController.getAllVaccinesForBranch(1);
+		});
 	}
 	
 	@Test
@@ -121,9 +120,9 @@ public class VaccinationControllerTest{
 
 	@Test
 	public void testGetAllAvailabilityForBranchNotFound() {
-		ResponseEntity<Availability> branchesResponse = vaccinationController.getAllAvailabilityForBranch(null);
-		System.out.println(branchesResponse.getStatusCode());
-		assertThat(branchesResponse.getStatusCode().compareTo(HttpStatus.NOT_FOUND)).isEqualTo(0);
+		assertThrows(NotFoundException.class, () ->{
+			vaccinationController.getAllAvailabilityForBranch(null);
+		});
 	}
 
 	/**

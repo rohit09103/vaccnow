@@ -14,12 +14,17 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Rohit
  *
  */
 @Entity
 @Table(name = "AVAILABILITY")
+@Getter
+@Setter
 public class AvailabilityEntity implements Serializable {
 	
 	/**
@@ -49,61 +54,7 @@ public class AvailabilityEntity implements Serializable {
 		// empty constructor
 	}
 
-	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the branch
-	 */
-	public BranchEntity getBranch() {
-		return branch;
-	}
-
-	/**
-	 * @param branch the branch to set
-	 */
-	public void setBranch(BranchEntity branch) {
-		this.branch = branch;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	/**
-	 * @return the slot
-	 */
-	public String getSlot() {
-		return slot;
-	}
-
-	/**
-	 * @param slot the slot to set
-	 */
-	public void setSlot(String slot) {
-		this.slot = slot;
-	}
+	
 
 	@Override
 	public String toString() {

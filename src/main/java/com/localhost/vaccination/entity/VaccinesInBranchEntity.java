@@ -13,12 +13,17 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Rohit
  *
  */
 @Entity
 @Table(name = "VACCINES_BRANCHES")
+@Getter
+@Setter
 public class VaccinesInBranchEntity implements Serializable{
 	
 	/**
@@ -41,48 +46,6 @@ public class VaccinesInBranchEntity implements Serializable{
 	
 	private Integer quantity;
 
-
-	/**
-	 * @return the branch
-	 */
-	public BranchEntity getBranch() {
-		return branch;
-	}
-
-	/**
-	 * @param branch the branch to set
-	 */
-	public void setBranch(BranchEntity branch) {
-		this.branch = branch;
-	}
-
-	/**
-	 * @return the vaccine
-	 */
-	public VaccineEntity getVaccine() {
-		return vaccine;
-	}
-
-	/**
-	 * @param vaccine the vaccine to set
-	 */
-	public void setVaccine(VaccineEntity vaccine) {
-		this.vaccine = vaccine;
-	}
-
-	/**
-	 * @return the quantity
-	 */
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	/**
-	 * @param quantity the quantity to set
-	 */
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
 
 	@Override
 	public String toString() {

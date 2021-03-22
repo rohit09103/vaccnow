@@ -23,25 +23,25 @@ public interface BranchService {
 	 * Method to fetch the details from dao layer and map them to model.
 	 * @return
 	 */
-	public List<Branch> getAllBranches();
+	 List<Branch> getAllBranches();
 	/**
 	 * Method to fetch all available vaccines for all the branches
 	 * @return
 	 */
-	public List<Branch> getAllVaccinesPerBranch();
+	 List<Branch> getAllVaccinesPerBranch();
 	
 	/**
 	 * Method to fetch all vaccines available for a branch identified by branchId
 	 * @param branchId
 	 * @return
 	 */
-	public Branch getAllVaccinesForBranch(Integer branchId);
+	 Branch getAllVaccinesForBranch(Integer branchId);
 	
 	/**
 	 * Method to fetch all vaialable slots for a branch
 	 * @param branchId
 	 * @return
 	 */
-	public Availability getAllAvailabilityForBranch(Integer branchId);
+	 Availability getAllAvailabilityForBranch(Integer branchId);
 
 }

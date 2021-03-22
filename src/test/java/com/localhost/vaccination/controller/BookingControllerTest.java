@@ -4,6 +4,7 @@
 package com.localhost.vaccination.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.localhost.vaccination.enums.PaymentMethodType;
 import com.localhost.vaccination.enums.StatusType;
+import com.localhost.vaccination.exception.NotFoundException;
 import com.localhost.vaccination.model.Booking;
 import com.localhost.vaccination.model.BranchBookings;
 import com.localhost.vaccination.model.PaymentMethod;
@@ -56,8 +58,9 @@ public class BookingControllerTest {
 
 	@Test
 	public void testGetAllBookingsForBranchesNotFound() {
-		ResponseEntity<BranchBookings> branchBookings = bookingController.getAllBookingsForBranches(null);
-		assertThat(branchBookings.getStatusCode().compareTo(HttpStatus.NOT_FOUND)).isEqualTo(0);
+		assertThrows(NotFoundException.class, () ->{
+			bookingController.getAllBookingsForBranches(null);
+		});
 	}
 
 	@Test
@@ -115,8 +118,9 @@ public class BookingControllerTest {
 	public void testGetAllBookingsForDateException() {
 		when(bookingService.fetchAllBookingsForDateOrPeriod(any(Date.class), any(Date.class), any(Date.class),
 				any(StatusType.class))).thenThrow(new RuntimeException());
-		ResponseEntity<List<Booking>> responseEntity = bookingController.getAllBookingsForDate(null, null, new Date());
-		assertThat(responseEntity.getStatusCode().compareTo(HttpStatus.INTERNAL_SERVER_ERROR)).isEqualTo(0);
+		assertThrows(Exception.class, () ->{
+			bookingController.getAllBookingsForDate(null, null, new Date());
+		});
 	}
 
 	private BranchBookings prepareBranchBooking() {

@@ -11,12 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Rohit
  *
  */
 @Entity
 @Table(name = "VACCINES")
+@Getter
+@Setter
 public class VaccineEntity implements Serializable {
 
 	/**
@@ -32,33 +37,6 @@ public class VaccineEntity implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public String toString() {

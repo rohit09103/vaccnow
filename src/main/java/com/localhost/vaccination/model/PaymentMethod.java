@@ -18,12 +18,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.localhost.vaccination.enums.PaymentMethodType;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author rohitsharma08
  *
  */
 @JsonAutoDetect
 @JsonInclude(value = Include.NON_NULL)
+@Getter
+@Setter
 public class PaymentMethod implements Serializable {
 
 	/**
@@ -64,104 +69,6 @@ public class PaymentMethod implements Serializable {
 		this.amount = amount;
 		this.creditCardNumber = creditCardNumber;
 		this.ccv = ccv;
-		this.expiryDate = expiryDate;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the payemntMethodId
-	 */
-	public String getPayemntMethodId() {
-		return payemntMethodId;
-	}
-
-	/**
-	 * @param payemntMethodId the payemntMethodId to set
-	 */
-	public void setPayemntMethodId(String payemntMethodId) {
-		this.payemntMethodId = payemntMethodId;
-	}
-
-	/**
-	 * @return the paymentMethodType
-	 */
-	public PaymentMethodType getPaymentMethodType() {
-		return paymentMethodType;
-	}
-
-	/**
-	 * @param paymentMethodType the paymentMethodType to set
-	 */
-	public void setPaymentMethodType(PaymentMethodType paymentMethodType) {
-		this.paymentMethodType = paymentMethodType;
-	}
-
-	/**
-	 * @return the amount
-	 */
-	public Double getAmount() {
-		return amount;
-	}
-
-	/**
-	 * @param amount the amount to set
-	 */
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
-	/**
-	 * @return the creditCardNumber
-	 */
-	public String getCreditCardNumber() {
-		return creditCardNumber;
-	}
-
-	/**
-	 * @param creditCardNumber the creditCardNumber to set
-	 */
-	public void setCreditCardNumber(String creditCardNumber) {
-		this.creditCardNumber = creditCardNumber;
-	}
-
-	/**
-	 * @return the ccv
-	 */
-	public Integer getCcv() {
-		return ccv;
-	}
-
-	/**
-	 * @param ccv the ccv to set
-	 */
-	public void setCcv(Integer ccv) {
-		this.ccv = ccv;
-	}
-
-	/**
-	 * @return the expiryDate
-	 */
-	public String getExpiryDate() {
-		return expiryDate;
-	}
-
-	/**
-	 * @param expiryDate the expiryDate to set
-	 */
-	public void setExpiryDate(String expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 

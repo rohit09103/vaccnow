@@ -1,0 +1,22 @@
+---
+version: 0.2
+env:
+  secrets-manager:
+    DOCKER_HUB_USER: "docker/hub/credentials:dockerhubUsername"
+    DOCKER_HUB_PASSWORD: "docker/hub/credentials:dockerhubPassword"
+phases:
+  build:
+    commands:
+      - "echo Build started on `date`"
+      - "echo Building the Docker image..."
+      - "docker build -t $DOCKER_HUB_USER/vaccnow:latest ."
+      - "docker tag $DOCKER_HUB_USER/vaccnow:latest $DOCKER_HUB_USER/vaccnow:latest"
+  post_build:
+    commands:
+      - "echo Build completed on `date`"
+      - "echo Pushing the Docker image..."
+      - "docker push $DOCKER_HUB_USER/vaccnow:latest"
+  pre_build:
+    commands:
+      - "echo Logging in to Docker Hub..."
+      - "docker login --username=\"$DOCKER_HUB_USER\" --password=\"$DOCKER_HUB_PASSWORD\""
